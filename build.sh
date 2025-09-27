@@ -7,8 +7,7 @@ set -o errexit
 pip3 install -r requirements.txt
 
 # Collect static files
-python3 manage.py collectstatic --no-input
-python3 manage.py collectstatic --no-input --clear
+python3 manage.py collectstatic --no-input --clear # --clear is recommended for clean builds
 
 # Apply database migrations
 python3 manage.py migrate
