@@ -81,8 +81,14 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+# Check if we are in the Vercel build environment
+IS_VERCEL_BUILD = os.environ.get('VERCEL_ENV') == 'production' and not os.environ.get('DATABASE_URL')
 
-if os.environ.get('DATABASE_URL'):
+if IS_VERCEL_BUILD:
+    # Use a dummy database engine during the build process on Vercel
+    # This prevents the 'ModuleNotFoundError: No module named _sqlite3'
+    DATABASES = {'default': {'ENGINE': 'django.db.backends.dummy'}}
+elif os.environ.get('postgresql://postgres:NnpWmAaBrZjqMPrnRhZhLDXCcQQoPEQh@hopper.proxy.rlwy.net:22843/railway'):
     DATABASES = {
         'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
     }
