@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Educational Resources</title>
+    <style>
+        body { font-family: sans-serif; max-width: 900px; margin: auto; padding: 20px; text-align: center; }
+        .section-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
+        .section-card { background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 40px 20px; text-decoration: none; color: #333; font-size: 1.2em; font-weight: bold; transition: transform 0.2s, box-shadow 0.2s; }
+        .section-card:hover { transform: translateY(-5px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <h1>Educational Resources</h1>
+    <p>Select a category to begin learning.</p>
+
+    <div class="section-grid">
+        {% for value, label in resource_types %}
+            <a href="{% url 'resource_list' resource_type=value %}" class="section-card">
+                {{ label }}
+            </a>
+        {% endfor %}
+    </div>
+</body>
+</html>

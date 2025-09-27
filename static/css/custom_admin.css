@@ -1,0 +1,48 @@
+
+/*
+ * Custom CSS for Racism Radar Admin
+ */
+
+:root {
+    --primary-color: #8B0000; /* Dark Red */
+    --secondary-color: #4b0000;
+    --accent-color: #ff4500;
+    --text-color: #ffffff;
+    --bg-color: #121212;
+    --bg-color-light: #1e1e1e;
+}
+
+#header {
+    background-color: var(--primary-color) !important;
+    color: var(--text-color) !important;
+}
+
+#branding h1, #branding h1 a, #branding h1 a:link, #branding h1 a:visited {
+    color: var(--text-color) !important;
+}
+
+.module h2, .module caption, .inline-group h2 {
+    background-color: var(--secondary-color) !important;
+}
+
+.button.default, input[type=submit].default {
+    background-color: var(--accent-color) !important;
+    color: var(--text-color) !important;
+}
+
+a.section:link, a.section:visited {
+    color: var(--text-color) !important;
+}
+
+.nav-sidebar .nav-link {
+    color: var(--text-color) !important;
+}
+
+.nav-sidebar .nav-link:hover {
+    background-color: var(--secondary-color) !important;
+}
+
+.nav-sidebar .nav-link.active {
+    background-color: var(--primary-color) !important;
+}
+

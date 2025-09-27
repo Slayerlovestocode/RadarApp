@@ -1,0 +1,207 @@
+{% extends 'reports/base.html' %}
+
+{% block title %}Submission Successful{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Adds a soft background to the whole page */
+        body {
+            background-color: var(--color-background-secondary, #f8f9fa);
+        }
+
+        /* --- Page Layout --- */
+        /* This new block will vertically center the card on the page */
+        .main-content {
+            display: flex;
+            align-items: center; /* Vertically center */
+            justify-content: center; /* Horizontally center */
+            min-height: calc(100vh - 100px); /* Adjust 100px based on potential header/footer height */
+            padding: var(--spacing-lg, 1.5rem) 0;
+        }
+
+        /* --- Animations --- */
+        @keyframes pop-in {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideAndFadeIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* --- Card and Icon Styling --- */
+        .success-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: var(--spacing-xl, 2rem) var(--spacing-lg, 1.5rem);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            animation: slideAndFadeIn 0.6s var(--easing-smooth) forwards;
+            width: 100%; /* Ensure card takes full width of its container */
+            max-width: 500px; /* Set a max width for the card */
+        }
+        
+        @media (min-width: 576px) {
+            .success-card {
+                padding: var(--spacing-xl, 2.5rem); /* More padding on larger screens */
+            }
+        }
+
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: #ffffff;
+            display: grid;
+            place-items: center;
+            margin: 0 auto var(--spacing-lg, 1.5rem);
+            font-size: 2.2rem;
+            animation: pop-in 0.6s var(--easing-bounce) 0.2s forwards;
+            transform: scale(0);
+        }
+
+        /* --- Typography --- */
+        .success-page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm, 0.5rem);
+            text-align: center; /* This ensures the title is centered */
+        }
+
+        .success-page-subtitle {
+            line-height: 1.6;
+            color: var(--color-text-secondary, #6c757d);
+            max-width: 450px;
+            margin: 0 auto var(--spacing-lg, 1.5rem);
+        }
+
+        /* --- Case ID Display --- */
+        .case-id-display {
+            font-family: 'SF Mono', 'Courier New', monospace;
+            background: var(--color-background-secondary, #f8f9fa);
+            color: var(--color-text-primary, #212529);
+            padding: var(--spacing-md, 1rem) var(--spacing-lg, 1.5rem);
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            border: 1px solid var(--color-border-light, #e9ecef);
+            margin: var(--spacing-lg, 1.5rem) 0;
+            user-select: all;
+        }
+
+        /* --- Buttons --- */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-md, 0.75rem);
+        }
+
+        .btn {
+            width: auto;
+            min-width: 200px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn.copied {
+            background-color: #28a745;
+            border-color: #28a745;
+            cursor: default;
+        }
+
+        /* --- Warning Box --- */
+        .warning-box {
+            background: #fffbe6; 
+            color: #856404;
+            padding: var(--spacing-md, 1rem);
+            border-radius: 12px;
+            font-weight: 500;
+            margin-top: var(--spacing-xl, 2rem);
+            margin-bottom: var(--spacing-lg, 1.5rem);
+            border: 1px solid #ffeeba;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .warning-box i {
+            font-size: 1.2rem;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+<main class="main-content container">
+    <div class="form-container">
+        <div class="success-card text-center">
+            
+            <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+
+            <h1 class="form-title success-page-title">Submission Successful</h1>
+            <p class="form-subtitle success-page-subtitle">Your report has been securely submitted. Please save your Case ID below to check the status of your report later.</p>
+
+            <div class="case-id-display" id="caseId">{{ case_id }}</div>
+
+            <div class="action-buttons">
+                <button id="copyBtn" class="btn btn-primary">
+                    <i class="fa-solid fa-copy" style="margin-right: 8px;"></i> Copy Case ID
+                </button>
+            </div>
+
+            <div class="warning-box">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div>
+                    <strong>You must save this ID.</strong> It is the only way to track your report. If you lose it, your report cannot be recovered.
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{% url 'home' %}" class="btn btn-secondary">Return to Home Page</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.getElementById('copyBtn').addEventListener('click', function() {
+        const button = this;
+        const caseIdText = document.getElementById('caseId').innerText;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(caseIdText).then(() => {
+                const originalText = button.innerHTML;
+                
+                button.innerHTML = '<i class="fa-solid fa-circle-check"></i> Copied!';
+                button.classList.add('copied');
+                button.disabled = true;
+
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('copied');
+                    button.disabled = false;
+                }, 2000);
+
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy ID. Please copy it manually.');
+            });
+        } else {
+            alert('Please copy the ID manually. This browser does not support the copy feature.');
+        }
+    });
+</script>
+{% endblock %}

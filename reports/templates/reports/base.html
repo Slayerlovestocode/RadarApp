@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}عدل Portal{% endblock %}</title>
+    {# The output.css is not provided, but assuming it's for Tailwind/utility classes, it's kept. #}
+    {# <link href="{% static 'css/output.css' %}" rel="stylesheet"> #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    {% block extra_head %}{% endblock %}
+
+    <style>
+        /* ---------------------------------- */
+        /* 1. DESIGN SYSTEM & BASE STYLES     */
+        /* ---------------------------------- */
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --color-background: #FFFFFF;
+            --color-surface: #FEFCFA;
+            --color-text-primary: #0F172A;
+            --color-text-secondary: #475569;
+            --color-text-muted: #94A3B8;
+            --color-accent-primary: #1E40AF;
+            --color-accent-secondary: #3B82F6;
+            --color-accent-interactive: #2563EB;
+            --color-accent-light: #EFF6FF;
+            --color-border-default: #E2E8F0;
+            --color-border-light: #F1F5F9;
+            --color-error: #DC2626;
+            --color-success: #16a34a;
+
+            --gradient-primary: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+            --gradient-surface: linear-gradient(135deg, #FEFCFA 0%, #F8FAFC 100%);
+            --gradient-accent: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            --gradient-mastheadTitle: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent-primary) 100%);
+
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-serif: 'Amiri', Georgia, serif;
+            --spacing-xs: 8px; --spacing-sm: 12px; --spacing-md: 16px; --spacing-lg: 24px; --spacing-xl: 32px; --spacing-xxl: 48px; --spacing-xxxl: 64px;
+            --duration-fast: 150ms; --duration-normal: 300ms; --duration-slow: 500ms;
+            --easing-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --backdrop-blur: blur(16px);
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            background: var(--gradient-surface);
+            color: var(--color-text-secondary);
+            font-family: var(--font-sans);
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+        .page-container { display: flex; flex-direction: column; min-height: 100vh; }
+        .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 var(--spacing-xl); }
+        .header { background: var(--glass-bg); -webkit-backdrop-filter: var(--backdrop-blur); backdrop-filter: var(--backdrop-blur); border-bottom: 1px solid var(--color-border-light); position: sticky; top: 0; z-index: 100; padding: var(--spacing-lg) 0; transition: all var(--duration-normal) var(--easing-smooth); }
+        .header-nav { display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-size: 1.875rem; font-weight: 700; color: var(--color-text-primary); text-decoration: none; font-family: var(--font-serif); transition: transform var(--duration-fast) var(--easing-smooth); }
+        .nav-logo:hover { transform: scale(1.02); }
+        .nav-logo-portal { font-family: var(--font-sans); font-weight: 500; color: var(--color-text-muted); letter-spacing: 0.05em; }
+        .nav-links { display: flex; gap: 2.5rem; }
+        .nav-link { text-decoration: none; color: var(--color-text-secondary); font-weight: 500; font-size: 0.95rem; position: relative; transition: all var(--duration-fast) var(--easing-smooth); padding: var(--spacing-xs) 0; }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 50%; background: var(--gradient-primary); transition: all var(--duration-normal) var(--easing-smooth); transform: translateX(-50%); border-radius: 1px; }
+        .nav-link:hover { color: var(--color-accent-primary); transform: translateY(-1px); }
+        .nav-link:hover::after { width: 100%; }
+        .header-actions { display: flex; gap: var(--spacing-md); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; border-radius: 10px; font-weight: 600; text-decoration: none; border: 1px solid transparent; transition: all var(--duration-fast) var(--easing-smooth); font-size: 0.9rem; cursor: pointer; position: relative; overflow: hidden; letter-spacing: 0.01em; }
+        .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); transition: left var(--duration-normal) var(--easing-smooth); }
+        .btn:hover::before { left: 100%; }
+        .btn-primary { background: var(--gradient-primary); color: var(--color-background); box-shadow: var(--shadow-md); }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: var(--shadow-lg); }
+        .btn-secondary { background: var(--color-background); color: var(--color-text-secondary); border: 1px solid var(--color-border-default); box-shadow: var(--shadow-sm); }
+        .btn-secondary:hover { background: var(--color-accent-light); border-color: var(--color-accent-primary); color: var(--color-accent-primary); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .footer { padding: var(--spacing-xl) 0; text-align: center; font-size: 0.875rem; color: var(--color-text-muted); margin-top: auto; border-top: 1px solid var(--color-border-light); background: var(--glass-bg); backdrop-filter: var(--backdrop-blur); }
+
+        /* ---------------------------------- */
+        /* 2. BEAUTIFUL FORM STYLES           */
+        /* ---------------------------------- */
+        .main-content { padding-top: var(--spacing-xxl); padding-bottom: var(--spacing-xxxl); }
+        .form-container { max-width: 700px; margin: 0 auto; }
+        .form-header { text-align: center; margin-bottom: var(--spacing-xl); }
+        .form-title { font-size: clamp(2.2rem, 5vw, 2.75rem); font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--spacing-sm); letter-spacing: -0.02em; }
+        .form-subtitle { font-size: 1.125rem; color: var(--color-text-secondary); max-width: 500px; margin: 0 auto; }
+        .form-card { background: var(--color-background); border-radius: 20px; padding: var(--spacing-xl); box-shadow: var(--shadow-xl); overflow: hidden; border: 1px solid var(--color-border-light); }
+
+        /* ENHANCEMENT: Animated Progress Bar */
+        .progress-bar { display: flex; justify-content: space-between; margin-bottom: var(--spacing-xl); padding: 0 var(--spacing-md); }
+        .progress-step { display: flex; flex-direction: column; align-items: center; color: var(--color-text-muted); font-weight: 600; font-size: 0.8rem; position: relative; flex: 1; transition: color var(--duration-normal); }
+        .step-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--color-border-light); display: grid; place-items: center; margin-bottom: var(--spacing-xs); transition: all var(--duration-normal) var(--easing-smooth); font-size: 1.1rem; border: 3px solid var(--color-border-light); }
+        .progress-step:not(:first-child)::before, .progress-step:not(:first-child)::after { content: ''; position: absolute; top: 20px; right: 50%; width: 100%; height: 4px; background: var(--color-border-light); z-index: -1; transform: translateY(-50%); }
+        .progress-step:not(:first-child)::after { background: var(--gradient-primary); transform: translateY(-50%) scaleX(0); transform-origin: right; transition: transform var(--duration-normal) var(--easing-smooth); }
+        .progress-step.active { color: var(--color-text-primary); }
+        .progress-step.active .step-icon { background: var(--color-accent-light); color: var(--color-accent-primary); border-color: var(--color-accent-primary); transform: scale(1.1); }
+        .progress-step.completed .step-icon { background: var(--color-success); border-color: var(--color-success); color: white; }
+        .progress-step.completed:not(:first-child)::after { transform: translateY(-50%) scaleX(1); }
+
+        /* ENHANCEMENT: Smoother Form Step Transitions */
+        .form-step { display: none; }
+        .form-step.active { display: block; animation: slideAndFadeIn 0.6s var(--easing-smooth) forwards; }
+        @keyframes slideAndFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ENHANCEMENT: More Interactive Incident Type Cards */
+        .incident-type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg); }
+        .type-card { border: 2px solid var(--color-border-default); border-radius: 16px; padding: var(--spacing-lg); text-align: center; cursor: pointer; transition: all var(--duration-fast) var(--easing-smooth); position: relative; background: white; }
+        .type-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--color-accent-secondary); }
+        .type-card.selected { border-color: var(--color-accent-primary); background: var(--color-accent-light); box-shadow: var(--shadow-lg); transform: translateY(-6px) scale(1.03); }
+        .type-card i { font-size: 2.5rem; color: var(--color-accent-primary); margin-bottom: var(--spacing-sm); display: block; transition: transform var(--duration-fast); }
+        .type-card:hover i { transform: scale(1.1); }
+        .type-card.selected i { animation: icon-pop 0.5s var(--easing-smooth); }
+        .type-card span { font-weight: 600; font-size: 1.1rem; color: var(--color-text-primary); display: block; }
+        @keyframes icon-pop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        
+        /* ENHANCEMENT: Refined Form Inputs */
+        .form-group { position: relative; margin-bottom: var(--spacing-lg); }
+        .form-label { position: absolute; left: var(--spacing-md); top: 16px; color: var(--color-text-muted); background: var(--color-background); padding: 0 6px; transition: all var(--duration-fast) var(--easing-smooth); pointer-events: none; }
+        .form-input { display: block; width: 100%; padding: var(--spacing-md); border: 2px solid var(--color-border-default); border-radius: 12px; background-color: var(--color-background); color: var(--color-text-secondary); font-family: var(--font-sans); font-size: 1rem; transition: all var(--duration-fast) var(--easing-smooth); }
+        .form-input:focus { outline: none; border-color: var(--color-accent-interactive); box-shadow: 0 0 0 3px var(--color-accent-light); }
+        .form-input:focus + .form-label, .form-input:not(:placeholder-shown) + .form-label { top: -11px; left: var(--spacing-sm); font-size: 0.85rem; color: var(--color-accent-interactive); font-weight: 500; }
+        .form-input::placeholder { color: transparent; }
+        textarea.form-input { min-height: 140px; resize: vertical; padding-top: var(--spacing-md); }
+        textarea.form-input:focus + .form-label, textarea.form-input:not(:placeholder-shown) + .form-label { top: -11px; }
+
+        .form-help-text { font-size: 0.8rem; color: var(--color-text-muted); margin-top: var(--spacing-xs); padding-left: var(--spacing-sm); }
+        .form-error { font-size: 0.85rem; color: var(--color-error); font-weight: 500; margin-top: var(--spacing-xs); }
+        
+        .form-navigation { display: flex; justify-content: space-between; margin-top: var(--spacing-xl); }
+        .submit-button { width: 100%; }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .header-nav { flex-wrap: wrap; gap: var(--spacing-md); }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0 var(--spacing-md); }
+            .header-actions { flex-direction: column; width: 100%; margin-top: var(--spacing-sm); }
+            .btn { width: 100%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <div class="page-container">
+        <header class="header">
+            <nav class="header-nav container">
+                {% block header_content %}
+                    <a href="{% url 'home' %}" class="nav-logo">عدل <span class="nav-logo-portal">PORTAL</span></a>
+                    <div class="nav-links">
+                        <a href="{% url 'incidents_heatmap' %}" class="nav-link">Insights</a>
+                        <a href="{% url 'about_us' %}" class="nav-link">About Us</a>
+                        <a href="{% url 'support_page' %}" class="nav-link">Support</a>
+                    </div>
+                    <div class="header-actions">
+                        <a href="{% url 'check_status' %}" class="btn btn-secondary">Check Status</a>
+                        <a href="{% url 'submit_report' %}" class="btn btn-primary">Submit Report</a>
+                    </div>
+                {% endblock header_content %}
+            </nav>
+        </header>
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

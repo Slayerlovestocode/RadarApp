@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Details - عدل Portal</title>
+    
+    <style>
+        /* ---------------------------------- */
+        /* 1. DESIGN SYSTEM & BASE STYLES     */
+        /* ---------------------------------- */
+
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            /* Palette */
+            --color-primary-background: #FFFFFF;
+            --color-primary-surface: #FEFCFA;
+            --color-text-primary: #0F172A;
+            --color-text-secondary: #475569;
+            --color-text-muted: #94A3B8;
+            --color-accent-primary: #1E40AF;
+            --color-accent-secondary: #3B82F6;
+            --color-accent-interactive: #2563EB;
+            --color-accent-light: #EFF6FF;
+            --color-border-default: #E2E8F0;
+            --color-border-light: #F1F5F9;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+            
+            /* Typography */
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-serif: 'Amiri', Georgia, serif;
+
+            /* Spacing */
+            --spacing-xs: 8px;
+            --spacing-sm: 12px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-xxl: 48px;
+            --spacing-xxxl: 64px;
+
+            /* Animations & Transitions */
+            --duration-fast: 150ms;
+            --duration-normal: 300ms;
+            --easing-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+            /* Effects */
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --backdrop-blur: blur(12px);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            background: var(--color-primary-surface);
+            color: var(--color-text-secondary);
+            font-family: var(--font-sans);
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-xl);
+        }
+
+        /* ---------------------------------- */
+        /* 2. REUSABLE COMPONENTS (Header, Footer, Buttons) */
+        /* ---------------------------------- */
+
+        .header {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            border-bottom: 1px solid var(--color-border-light);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: var(--spacing-lg) 0;
+        }
+
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            text-decoration: none;
+            font-family: var(--font-serif);
+        }
+        .nav-logo-portal {
+            font-family: var(--font-sans);
+            font-weight: 500;
+            color: var(--color-text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links { display: flex; gap: 2.5rem; }
+        .nav-link {
+            text-decoration: none;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        .header-actions { display: flex; gap: var(--spacing-md); }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all var(--duration-fast) var(--easing-smooth);
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--color-primary-background);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--color-primary-background);
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border-default);
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-secondary:hover {
+            background: var(--color-accent-light);
+            border-color: var(--color-accent-primary);
+            color: var(--color-accent-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .footer {
+            padding: var(--spacing-xl) 0;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin-top: auto;
+            border-top: 1px solid var(--color-border-light);
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+        }
+
+        /* ---------------------------------- */
+        /* 3. PAGE-SPECIFIC STYLES            */
+        /* ---------------------------------- */
+
+        .main-content {
+            flex-grow: 1;
+            padding-top: var(--spacing-xxxl);
+            padding-bottom: var(--spacing-xxxl);
+        }
+
+        .report-details-container {
+            max-width: 800px; /* Centered content area */
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            line-height: 1.2;
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+            letter-spacing: -0.02em;
+        }
+
+        .report-card {
+            background: var(--color-primary-background);
+            border: 1px solid var(--color-border-default);
+            border-radius: 16px;
+            padding: var(--spacing-xl) var(--spacing-xxl);
+            box-shadow: var(--shadow-md);
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--color-border-light);
+            padding-bottom: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .case-id {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            font-family: monospace;
+        }
+
+        .case-id strong {
+            display: block;
+            font-family: var(--font-sans);
+            color: var(--color-text-secondary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .status-badge {
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* Dynamic status colors based on design system palette */
+        .status-badge.open { background-color: #FFFBEB; color: #B45309; } /* Yellowish */
+        .status-badge.review { background-color: var(--color-accent-light); color: var(--color-accent-primary); } /* Blueish */
+        .status-badge.closed { background-color: #F3F4F6; color: #4B5563; } /* Grayish */
+        
+        .report-body-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .report-item strong {
+            display: block;
+            color: var(--color-text-primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        .report-item span, .report-item p {
+            color: var(--color-text-secondary);
+        }
+
+        .report-description {
+            grid-column: 1 / -1; /* Make description span both columns */
+        }
+        
+        .report-description p {
+            line-height: 1.7;
+            white-space: pre-wrap; /* Respects newlines in the description */
+            margin: 0;
+        }
+
+        .actions-bar {
+            text-align: center;
+            margin-top: var(--spacing-xxl);
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 var(--spacing-lg); }
+            .nav-links, .header-actions .btn-secondary { display: none; }
+            .report-card { padding: var(--spacing-xl); }
+            .report-body-grid { grid-template-columns: 1fr; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="page-container">
+    <header class="header">
+        <nav class="header-nav container">
+            <a href="{% url 'home' %}" class="nav-logo">عدل <span class="nav-logo-portal">PORTAL</span></a>
+            <div class="nav-links">
+                <a href="#" class="nav-link">Insights</a>
+                <a href="#" class="nav-link">Guidance</a>
+                <a href="#" class="nav-link">About Us</a>
+            </div>
+            <div class="header-actions">
+                <a href="{% url 'check_status' %}" class="btn btn-secondary">Check Status</a>
+                <a href="{% url 'submit_report' %}" class="btn btn-primary">Submit Report</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content container">
+        <div class="report-details-container">
+            <h1 class="page-title">Report Details</h1>
+
+            <div class="report-card">
+                <div class="report-header">
+                    <div class="case-id">
+                        <strong>Case ID</strong>
+                        <span>{{ report.case_id }}</span>
+                    </div>
+                    
+                    {% if report.status == 'Open' %}
+                        <span class="status-badge open">Open</span>
+                    {% elif report.status == 'Under Review' %}
+                        <span class="status-badge review">Under Review</span>
+                    {% elif report.status == 'Closed' %}
+                        <span class="status-badge closed">Closed</span>
+                    {% else %}
+                        <span class="status-badge">{{ report.status }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="report-body-grid">
+                    <div class="report-item">
+                        <strong>Incident Type</strong>
+                        <span>{{ report.incident_type }}</span>
+                    </div>
+                    <div class="report-item">
+                        <strong>Date & Time of Incident</strong>
+                        <span>{{ report.incident_datetime|date:"F j, Y, P" }}</span>
+                    </div>
+                    <div class="report-item">
+                        <strong>Location</strong>
+                        <span>{{ report.location }}</span>
+                    </div>
+                    <div class="report-item report-description">
+                        <strong>Description</strong>
+                        <p>{{ report.description|linebreaksbr }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions-bar">
+                <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer container">
+        <p>© 2025 عدل Portal. All rights reserved.</p>
+    </footer>
+</div>
+
+</body>
+</html>

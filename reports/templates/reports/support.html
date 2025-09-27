@@ -1,0 +1,478 @@
+{% extends "reports/base.html" %}
+{% load static %}
+
+{% block title %}Support Our Cause - Adl Portal{% endblock %}
+
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+/* ---------------------------------- */
+/* GLOBAL STYLES & CSS VARIABLES      */
+/* ---------------------------------- */
+:root {
+/* Palette */
+--color-background: #FFFFFF;
+--color-surface: #FEFCFA;
+--color-text-primary: #0F172A;
+--color-text-secondary: #475569;
+--color-text-muted: #94A3B8;
+--color-accent-primary: #1E40AF;
+--color-accent-secondary: #3B82F6;
+--color-accent-interactive: #2563EB;
+--color-accent-light: #EFF6FF;
+--color-border-default: #E2E8F0;
+--color-border-light: #F1F5F9;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
+    --gradient-surface: linear-gradient(135deg, #FEFCFA 0%, #F8FAFC 100%);
+    --gradient-accent: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+    --gradient-mastheadTitle: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent-primary) 100%);
+
+    /* Typography */
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif: 'Amiri', Georgia, serif;
+
+    /* Spacing Scale */
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+    --spacing-xxxl: 64px;
+
+    /* Effects */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --backdrop-blur: blur(12px);
+
+    /* Animation */
+    --duration-fast: 150ms;
+    --duration-normal: 300ms;
+    --duration-slow: 500ms;
+    --easing-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ---------------------------------- *
+/* BASE &amp; LAYOUT                      */
+/* ---------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-background);
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-xl);
+}
+
+main {
+    flex-grow: 1;
+    padding: var(--spacing-xxxl) 0;
+}
+
+/* ---------------------------------- */
+/* KEYFRAME ANIMATIONS                */
+/* ---------------------------------- */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------------------------------- */
+/* HEADER                             */
+/* ---------------------------------- */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: var(--spacing-lg) 0;
+    background: var(--glass-bg);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border-bottom: 1px solid var(--color-border-light);
+    transition: all var(--duration-normal) var(--easing-smooth);
+}
+.site-header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo {
+    font-size: 1.875rem;
+    font-weight: 700;
+    font-family: var(--font-serif);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: transform var(--duration-fast) var(--easing-smooth);
+}
+.logo:hover { transform: scale(1.02); }
+.logo span {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
+}
+
+/* ---------------------------------- */
+/* BUTTONS                            */
+/* ---------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: all var(--duration-fast) var(--easing-smooth);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+.btn-primary {
+    background: var(--gradient-primary);
+    color: var(--color-background);
+    box-shadow: var(--shadow-md);
+}
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+/* Shiny hover effect for buttons */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left var(--duration-normal) var(--easing-smooth);
+}
+.btn:hover::before {
+    left: 100%;
+}
+
+/* ---------------------------------- */
+/* MASTHEAD                           */
+/* ---------------------------------- */
+.masthead {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto var(--spacing-xxxl);
+    animation: fadeInUp var(--duration-slow) var(--easing-smooth) forwards;
+    opacity: 0;
+}
+.masthead-title {
+    font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+    font-weight: 700;
+    font-family: var(--font-serif);
+    line-height: 1.1;
+    margin-bottom: var(--spacing-lg);
+    letter-spacing: -0.02em;
+    background: var(--gradient-mastheadTitle);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+.masthead-description {
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+    font-weight: 400;
+    line-height: 1.7;
+    max-width: 700px;
+    margin: 0 auto;
+    margin-bottom: var(--spacing-xl);
+}
+
+/* ---------------------------------- */
+/* INTRODUCTION SECTION               */
+/* ---------------------------------- */
+.intro-section {
+    max-width: 800px;
+    margin: 0 auto var(--spacing-xxxl);
+    padding: var(--spacing-xl);
+    text-align: center;
+    background: var(--gradient-surface);
+    border: 1px solid var(--color-border-light);
+    border-radius: 16px;
+    opacity: 0;
+    animation: fadeInUp var(--duration-slow) var(--easing-smooth) 200ms forwards;
+}
+.intro-section h2 {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-sm);
+}
+.intro-section p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ---------------------------------- */
+/* CONTENT GRID &amp; CARDS               */
+/* ---------------------------------- */
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xl);
+}
+.content-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    background: var(--color-background);
+    border: 1px solid var(--color-border-default);
+    border-radius: 16px;
+    padding: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--duration-normal) var(--easing-smooth);
+    opacity: 0;
+    animation: fadeInUp var(--duration-slow) var(--easing-smooth) forwards;
+    animation-delay: calc(var(--animation-order) * 150ms);
+}
+.content-card:hover {
+    transform: translateY(-12px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--color-accent-light);
+}
+/* Top border hover effect */
+.content-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    height: 4px;
+    width: 100%;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-normal) var(--easing-smooth);
+}
+.content-card:hover::before {
+    transform: scaleX(1);
+}
+
+.card-illustration {
+    height: 120px;
+    background: var(--gradient-accent);
+    border-radius: 12px;
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+/* Radial pulse hover effect */
+.card-illustration::after {
+    content: '';
+    position: absolute;
+    width: 100%; height: 100%;
+    top: 0; left: 0;
+    background: radial-gradient(circle, rgba(30, 64, 175, 0.1) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform var(--duration-slow) var(--easing-bounce);
+}
+.content-card:hover .card-illustration::after {
+    transform: scale(1.5);
+}
+.card-icon {
+    color: var(--color-accent-primary);
+    font-size: 2.5rem;
+    transition: all var(--duration-normal) var(--easing-bounce);
+    z-index: 2;
+}
+.content-card:hover .card-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-xs);
+    letter-spacing: -0.01em;
+}
+.card-description {
+    flex-grow: 1;
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+/* ---------------------------------- */
+/* FOOTER                             */
+/* ---------------------------------- */
+.site-footer {
+    padding: var(--spacing-xl) 0;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-top: auto;
+    border-top: 1px solid var(--color-border-light);
+}
+
+/* ---------------------------------- */
+/* RESPONSIVE STYLES                  */
+/* ---------------------------------- */
+@media (max-width: 1024px) {
+    .content-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+    }
+    .container {
+        padding: 0 var(--spacing-lg);
+    }
+}
+
+@media (max-width: 768px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+    main {
+        padding: var(--spacing-xxl) 0;
+    }
+    .masthead {
+        margin-bottom: var(--spacing-xxl);
+    }
+    .masthead-description {
+        font-size: 1.125rem;
+    }
+    .site-header nav {
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+    .site-header nav {
+        justify-content: center;
+    }
+    .header-actions {
+        width: 100%;
+        display: flex;
+    }
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Accessibility: Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container" style="min-height: 0;">
+<main>
+    <div class="container">
+        
+        <section class="masthead">
+            <h1 class="masthead-title">Uphold Justice, Combat Prejudice</h1>
+            <p class="masthead-description">Inspired by the Quranic call for justice, help us build a world free from racial prejudice and stand for the dignity of all humanity.</p>
+            <a href="{% url 'support_page' %}" class="btn btn-primary">Answer the Call for Justice</a>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-top: var(--spacing-sm);">(Secure donation portal coming soon, Insha'Allah!)</p>
+        </section>
+        
+        <section class="intro-section">
+            <h2>An Islamic Imperative</h2>
+            <p>
+                Islam teaches that all people are equal in the eyes of Allah. This portal is our effort to put this belief into action, using technology to expose and combat the <em>zulm</em> (oppression) of systemic racism. Your support is a form of <em>Sadaqa Jariyah</em> (ongoing charity) that provides crucial insights for our leaders and allies.
+            </p>
+        </section>
+
+        <section class="content-grid-section">
+            <div class="content-grid">
+                
+                <div class="content-card" style="--animation-order: 1;">
+                    <div class="card-illustration">
+                        <i class="fas fa-lightbulb card-icon"></i>
+                    </div>
+                    <h3 class="card-title">Sharpening Our Tools</h3>
+                    <p class="card-description">
+                        Your donation directly funds technological development, making our detection algorithms more accurate. This allows us to bear witness to the truth more effectively and provide clear evidence to challenge falsehood.
+                    </p>
+                </div>
+
+                <div class="content-card" style="--animation-order: 2;">
+                    <div class="card-illustration">
+                        <i class="fas fa-balance-scale card-icon"></i>
+                    </div>
+                    <h3 class="card-title">Bearing Witness</h3>
+                    <p class="card-description">
+                        With more resources, we can expand our monitoring to more platforms and regions, fulfilling our duty to stand for justice and bear witness against oppression, wherever it may be found.
+                    </p>
+                </div>
+
+                <div class="content-card" style="--animation-order: 3;">
+                    <div class="card-illustration">
+                        <i class="fas fa-users card-icon"></i>
+                    </div>
+                    <h3 class="card-title">Empowering the Ummah</h3>
+                    <p class="card-description">
+                        We partner with Muslim organizations and activists. Your support provides them with the data needed to advocate for policy change, promote understanding, and build a more just society for all.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        © {% now "Y" %} Adl Portal Project. All Rights Reserved.
+    </div>
+</div>
+{% endblock %}

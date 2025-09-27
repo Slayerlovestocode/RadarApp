@@ -1,0 +1,343 @@
+{% extends 'reports/base.html' %}
+
+{% block title %}Submit a Report - عدل Portal{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+
+{% block content %}
+<div class="page-container" style="min-height: 0;">    <main class="main-content container">
+        <div class="form-container">
+            <div class="form-header">
+                <h1 class="form-title">Bear Witness Against Injustice</h1>
+                <p class="form-subtitle">Your identity is protected. Follow the steps to share your testimony.</p>
+            </div>
+
+            <div class="form-card">
+                <div class="progress-bar">
+                    <div class="progress-step active" data-step="1">
+                        <div class="step-icon">1</div>
+                        The Incident
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-icon">2</div>
+                        Time & Place
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-icon">3</div>
+                        The Details
+                    </div>
+                    <div class="progress-step" data-step="4" id="progress-step-evidence">
+                        <div class="step-icon">4</div>
+                        Evidence (Optional)
+                    </div>
+                    <div class="progress-step" data-step="5" id="progress-step-contact">
+                        <div class="step-icon">5</div>
+                        Contact (Optional)
+                    </div>
+                </div>
+
+                <form id="multiStepForm" method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+
+                    <div class="form-step active" data-step="1">
+                        <h3 class="text-lg font-bold text-center mb-4" style="color: var(--color-text-primary); font-size: 1.25rem;">What type of incident are you reporting?</h3>
+                        <div class="incident-type-grid">
+                            {% for value, text in form.incident_type.field.choices %}
+                                {% if value %}
+                                <div class="type-card" data-value="{{ value }}">
+                                    <i class="
+                                        {% if 'Physical' in text %}fa-solid fa-hand-fist{% endif %}
+                                        {% if 'Discrimination' in text %}fa-solid fa-briefcase{% endif %}
+                                        {% if 'Verbal' in text %}fa-solid fa-bullhorn{% endif %}
+                                        {% if 'Online' in text %}fa-solid fa-globe{% endif %}
+                                    "></i>
+                                    <span>{{ text }}</span>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {{ form.incident_type.as_hidden }}
+                        <div class="form-navigation">
+                            <span></span> <button type="button" class="btn btn-primary next-btn" disabled>Next Step &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" data-step="2">
+                        <div class="form-group">
+                            {{ form.incident_datetime }}
+                            <label for="{{ form.incident_datetime.id_for_label }}" class="form-label">{{ form.incident_datetime.label }}</label>
+                            {% if form.incident_datetime.help_text %}<p class="form-help-text">{{ form.incident_datetime.help_text }}</p>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.location }}
+                            <label for="{{ form.location.id_for_label }}" class="form-label">{{ form.location.label }}</label>
+                            {% if form.location.help_text %}<p class="form-help-text">{{ form.location.help_text }}</p>{% endif %}
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn btn-secondary prev-btn">&larr; Previous</button>
+                            <button type="button" class="btn btn-primary next-btn" disabled>Next Step &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" data-step="3">
+                        <div class="form-group">
+                            {{ form.description }}
+                            <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
+                             {% if form.description.help_text %}<p class="form-help-text">{{ form.description.help_text }}</p>{% endif %}
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn btn-secondary prev-btn">&larr; Previous</button>
+                            <button type="button" class="btn btn-primary next-btn" disabled>Next Step &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" data-step="4">
+                        <h3 class="text-lg font-bold text-center mb-1" style="color: var(--color-text-primary); font-size: 1.25rem;">Upload Evidence</h3>
+                        <p class="text-center text-sm mb-4" style="color: var(--color-text-secondary);">This is optional. You can upload images, videos, or documents.</p>
+                        
+                        <div id="evidence-file-list" class="mb-4"></div>
+                        <div id="evidence-inputs-container">
+                            {{ form.evidence }}
+                        </div>
+                        <div class="text-center mt-2">
+                            <button type="button" id="add-evidence-btn" class="btn btn-secondary btn-sm">Add another file</button>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn btn-secondary prev-btn">&larr; Previous</button>
+                            <button type="button" class="btn btn-link next-btn" id="evidence-next-btn">I don't have any evidence &rarr;</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step" data-step="5">
+                        <h3 class="text-lg font-bold text-center mb-1" style="color: var(--color-text-primary); font-size: 1.25rem;">Contact Information</h3>
+                        <p class="text-center text-sm mb-4" style="color: var(--color-text-secondary);">This is optional. Provide if you are willing to be contacted for follow-up.</p>
+                        <div class="form-group">
+                            <select name="contact_method" id="id_contact_method" class="form-input">
+                                <option value="">Select contact method...</option>
+                                <option value="email">Email</option>
+                                <option value="phone">Phone</option>
+                                <option value="telegram">Telegram</option>
+                            </select>
+                            <label for="id_contact_method" class="form-label">Contact Method</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="contact_info" id="id_contact_info" class="form-input" placeholder=" ">
+                            <label for="id_contact_info" class="form-label">Contact Detail (Email, Phone #, or Telegram ID)</label>
+                        </div>
+                        <div class="form-navigation">
+                            <button type="button" class="btn btn-secondary prev-btn">&larr; Previous</button>
+                            <button type="submit" class="btn btn-primary submit-button" disabled>Submit Secure Report</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </main>
+
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const multiStepForm = document.getElementById('multiStepForm');
+    const formSteps = Array.from(multiStepForm.querySelectorAll('.form-step'));
+    const progressSteps = Array.from(document.querySelectorAll('.progress-step'));
+    const incidentTypeCards = multiStepForm.querySelectorAll('.type-card');
+    const incidentTypeHiddenInput = document.getElementById('{{ form.incident_type.id_for_label }}');
+
+    // Get all form inputs that require validation
+    const incidentDatetimeInput = document.getElementById('{{ form.incident_datetime.id_for_label }}');
+    const locationInput = document.getElementById('{{ form.location.id_for_label }}');
+    const evidenceInput = document.getElementById('{{ form.evidence.id_for_label }}');
+    const descriptionInput = document.getElementById('{{ form.description.id_for_label }}');
+    const contactMethodInput = document.getElementById('id_contact_method');
+    const contactInfoInput = document.getElementById('id_contact_info');
+
+    let currentStep = 1;
+
+    // --- Event Listeners for Navigation ---
+    multiStepForm.addEventListener('click', e => {
+        if (e.target.matches('.next-btn')) {
+            goToStep(currentStep + 1);
+        }
+        if (e.target.matches('.prev-btn')) {
+            e.preventDefault();
+            goToStep(currentStep - 1);
+        }
+    });
+
+    // --- Event Listeners for Interactive Inputs ---
+    incidentTypeCards.forEach(card => {
+        card.addEventListener('click', () => {
+            incidentTypeCards.forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            incidentTypeHiddenInput.value = card.dataset.value;
+            validateAndToggleNextButton();
+
+            // Automatically move to next step after a brief delay
+            setTimeout(() => {
+                goToStep(currentStep + 1);
+            }, 400);
+        });
+    });
+    
+    // Add event listeners to other inputs to check validation on the fly
+    [incidentDatetimeInput, locationInput, descriptionInput, evidenceInput, contactMethodInput, contactInfoInput].forEach(input => {
+        input.addEventListener('input', validateAndToggleNextButton);
+    });
+
+    function validateStep(stepNumber) {
+        switch (stepNumber) {
+            case 1:
+                return incidentTypeHiddenInput.value.trim() !== '';
+            case 2:
+                return incidentDatetimeInput.value.trim() !== '' && locationInput.value.trim() !== '';
+            case 3:
+                return descriptionInput.value.trim() !== '';
+            case 4: // No validation needed to proceed to this optional step
+                return true;
+            case 5:
+                // If a contact method is chosen, the detail must also be provided.
+                return contactMethodInput.value.trim() === '' || contactInfoInput.value.trim() !== '';
+            default:
+                return false;
+        }
+    }
+
+    function validateAndToggleNextButton() {
+        const currentStepElement = formSteps[currentStep - 1];
+        if (!currentStepElement) return;
+
+        const nextBtn = currentStepElement.querySelector('.next-btn');
+        const submitBtn = currentStepElement.querySelector('.submit-button');
+
+        if (submitBtn) {
+            // Special handling for the final submit button
+            const isContactStepComplete = contactMethodInput.value.trim() !== '' && contactInfoInput.value.trim() !== '';
+            submitBtn.disabled = contactMethodInput.value.trim() !== '' && !isContactStepComplete;
+        }
+        else if (nextBtn) {
+            if (validateStep(currentStep)) {
+                nextBtn.disabled = false;
+            } else {
+                nextBtn.disabled = true;
+            }
+        }
+    }
+
+    function goToStep(stepNumber) {
+        // If moving forward, validate the current step first
+        if (stepNumber > currentStep) {
+            if (!validateStep(currentStep)) {
+                // Optionally, you could show an error message here
+                console.log(`Step ${currentStep} is not valid.`);
+                return; // Stop navigation
+            }
+        }
+
+        if (stepNumber < 1 || stepNumber > formSteps.length) return;
+        currentStep = stepNumber;
+        updateFormSteps();
+        updateProgressBar();
+    }
+
+    function updateFormSteps() {
+        formSteps.forEach(step => {
+            step.classList.toggle('active', parseInt(step.dataset.step) === currentStep);
+        });
+        validateAndToggleNextButton(); // Check validation status of the new step
+    }
+
+    // UPDATED: Progress bar logic for 'completed' state
+    function updateProgressBar() {
+        progressSteps.forEach((step, index) => {
+            const stepNum = index + 1;
+            if (stepNum < currentStep) {
+                step.classList.add('active', 'completed');
+                step.querySelector('.step-icon').innerHTML = '<i class="fas fa-check"></i>';
+            } else if (stepNum === currentStep) {
+                step.classList.add('active');
+                step.classList.remove('completed');
+                step.querySelector('.step-icon').innerHTML = stepNum;
+            } else {
+                step.classList.remove('active', 'completed');
+                step.querySelector('.step-icon').innerHTML = stepNum;
+            }
+        });
+    }
+    
+    // --- Code for Floating Labels ---
+    document.querySelectorAll('.form-input').forEach(input => {
+        // Add a placeholder with a space to make the CSS :not(:placeholder-shown) selector work
+        if (!input.placeholder) {
+             input.placeholder = " ";
+        }
+    });
+
+    // --- New Evidence Upload Logic ---
+    const evidenceInputsContainer = document.getElementById('evidence-inputs-container');
+    const addEvidenceBtn = document.getElementById('add-evidence-btn');
+    const fileListContainer = document.getElementById('evidence-file-list');
+    let fileInputCounter = 0;
+
+    function updateFileList() {
+        fileListContainer.innerHTML = '';
+        const allInputs = evidenceInputsContainer.querySelectorAll('input[type="file"]');
+        let hasFiles = false;
+
+        allInputs.forEach(input => {
+            if (input.files.length > 0) {
+                hasFiles = true;
+                const file = input.files[0];
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <span>${file.name}</span>
+                    <button type="button" class="remove-file-btn" data-input-id="${input.id}">&times;</button>
+                `;
+                fileListContainer.appendChild(fileItem);
+            }
+        });
+
+        // Update the "Next" button text based on whether files are selected
+        const evidenceNextBtn = document.getElementById('evidence-next-btn');
+        if (hasFiles) {
+            evidenceNextBtn.textContent = 'Next Step →';
+            evidenceNextBtn.classList.remove('btn-link');
+            evidenceNextBtn.classList.add('btn-primary');
+        } else {
+            evidenceNextBtn.textContent = "I don't have any evidence →";
+            evidenceNextBtn.classList.add('btn-link');
+            evidenceNextBtn.classList.remove('btn-primary');
+        }
+    }
+
+    evidenceInputsContainer.addEventListener('change', (e) => {
+        if (e.target.matches('input[type="file"]')) {
+            updateFileList();
+        }
+    });
+
+    fileListContainer.addEventListener('click', (e) => {
+        if (e.target.matches('.remove-file-btn')) {
+            const inputId = e.target.dataset.inputId;
+            document.getElementById(inputId).remove();
+            updateFileList();
+        }
+    });
+
+    addEvidenceBtn.addEventListener('click', () => {
+        fileInputCounter++;
+        const newFileInput = document.createElement('input');
+        newFileInput.type = 'file';
+        newFileInput.name = 'evidence';
+        newFileInput.id = `id_evidence_${fileInputCounter}`;
+        newFileInput.className = evidenceInput.className + ' mt-2'; // Reuse styles
+        evidenceInputsContainer.appendChild(newFileInput);
+    });
+});
+</script>
+{% endblock %}

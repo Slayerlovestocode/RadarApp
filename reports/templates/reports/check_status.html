@@ -1,0 +1,54 @@
+{% extends 'reports/base.html' %}
+{% load static %}
+
+{% block title %}Check Report Status{% endblock %}
+
+{# Add a link to an icon library like Font Awesome for the best experience #}
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+
+
+{% block content %}
+<main class="main-content">
+    <div class="container">
+        <div class="form-container">
+            
+            <header class="form-header">
+                <h1 class="form-title">Check Your Report Status</h1>
+                <p class="form-subtitle">Enter the Unique Case ID you received during submission to see the latest updates on your case.</p>
+            </header>
+
+            <div class="form-card" style="animation: slideAndFadeIn 0.6s var(--easing-smooth) forwards;">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    {# 1. Interactive Floating Label Input #}
+                    <div class="form-group">
+                        <input type="text" name="case_id" id="case_id_input" class="form-input" placeholder="e.g., ABC-123-XYZ-789" required>
+                        <label for="case_id_input" class="form-label">Unique Case ID</label>
+                        <p class="form-help-text">This is the 12-character ID you received upon submission.</p>
+                    </div>
+
+                    {# 2. Styled Error Message #}
+                    {% if error %}
+                        <p class="form-error" style="text-align: center; margin-bottom: var(--spacing-md);">
+                            <i class="fas fa-exclamation-triangle"></i> {{ error }}
+                        </p>
+                    {% endif %}
+
+                    {# 3. Enhanced Submit Button #}
+                    <div class="form-navigation">
+                        <button type="submit" class="btn btn-primary submit-button">
+                            Check Status
+                            {# This icon is from Font Awesome #}
+                            <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</main>
+{% endblock %}

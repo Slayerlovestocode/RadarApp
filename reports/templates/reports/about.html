@@ -1,0 +1,259 @@
+{% extends 'reports/base.html' %}
+
+{% block title %}About Us - عدل Portal{% endblock %}
+
+{% block extra_head %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    /* --- General & Animations --- */
+    :root {
+        --font-serif: 'Playfair Display', serif;
+        --font-sans: 'Inter', sans-serif;
+        --color-dark: #1A202C;
+        --color-text-secondary: #4A5568;
+        --color-accent: #2C7A7B;
+        --color-accent-light: #E6FFFA;
+        --color-bg-shaded: #F7FAFC;
+    }
+
+    body {
+        background-color: var(--color-background, #fff);
+        font-family: var(--font-sans);
+        overflow-x: hidden;
+    }
+
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .fade-in-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* --- Header Section --- */
+    .about-header {
+        text-align: center;
+        padding: clamp(5rem, 12vw, 7rem) var(--spacing-lg);
+        background-color: var(--color-bg-shaded);
+    }
+
+    .about-title {
+        font-family: var(--font-serif);
+        font-size: clamp(3rem, 7vw, 4.5rem);
+        color: var(--color-dark);
+        line-height: 1.1;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .about-subtitle {
+        font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+        color: var(--color-text-secondary);
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.8;
+    }
+
+    /* --- Content Sections --- */
+    .content-section {
+        padding: clamp(4rem, 10vw, 6rem) var(--spacing-lg);
+    }
+
+    .section-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xxl);
+        align-items: center;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    
+    @media (min-width: 768px) {
+        .section-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .content-section:nth-of-type(even) .section-grid .section-image {
+            order: -1; /* Image on the left for even sections */
+        }
+    }
+
+    .section-title {
+        font-family: var(--font-serif);
+        font-size: clamp(2.2rem, 5vw, 3rem);
+        color: var(--color-dark);
+        line-height: 1.2;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .section-content p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--color-text-secondary);
+    }
+    
+    .section-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    /* --- Principles Section --- */
+    .principles-section {
+        background-color: var(--color-bg-shaded);
+    }
+    
+    .principles-header {
+        text-align: center;
+        margin-bottom: var(--spacing-xxl);
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .principles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--spacing-xl);
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .principle-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: var(--spacing-xl);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid var(--color-border-light, #e9ecef);
+        transition: all 0.3s ease;
+        display: flex;
+        gap: var(--spacing-lg);
+        align-items: flex-start;
+    }
+
+    .principle-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+        border-color: var(--color-accent);
+    }
+
+    .principle-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: var(--color-accent-light);
+        color: var(--color-accent);
+    }
+
+    .principle-text h3 {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--color-dark);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .principle-text p {
+        color: var(--color-text-secondary);
+        line-height: 1.7;
+        font-size: 0.95rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="main-content" style="padding-top: 0;">
+    <header class="about-header">
+        <div class="container">
+            <h1 class="about-title fade-in-up">Justice Through Testimony</h1>
+            <p class="about-subtitle fade-in-up" style="transition-delay: 0.1s;">The عدل (Adl) Portal is a community-driven initiative for a just and equitable Ummah. We provide a secure, confidential, and faith-guided platform to bear witness against injustice.</p>
+        </div>
+    </header>
+
+    <section class="content-section container">
+        <div class="section-grid">
+            <div class="section-text fade-in-up">
+                <h2 class="section-title">Our Vision</h2>
+                <div class="section-content">
+                    <p>We envision a global community where every voice matters. Where data-driven insights, guided by Islamic principles, lead to tangible actions against discrimination and prejudice, fostering a more compassionate society.</p>
+                </div>
+            </div>
+            <div class="section-image fade-in-up">
+                <img src="https://placehold.co/600x450/F7FAFC/2C7A7B?text=Vision" alt="Abstract image representing vision and clarity">
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section container">
+        <div class="section-grid">
+            <div class="section-text fade-in-up">
+                <h2 class="section-title">Your Voice, Amplified & Protected</h2>
+                <div class="section-content">
+                    <p>We are your advocates, raising your voice against injustice in a manner designed to protect you completely. Your privacy is the foundation of our platform, ensuring you can speak truth to power without compromise.</p>
+                </div>
+            </div>
+            <div class="section-image fade-in-up">
+                <img src="https://placehold.co/600x450/E6FFFA/1A202C?text=Security" alt="Abstract image representing security and privacy">
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section principles-section">
+        <div class="container">
+            <div class="principles-header fade-in-up">
+                 <h2 class="section-title">Our Guiding Principles</h2>
+                 <p class="about-subtitle" style="font-size: 1.1rem;">Our work is rooted in core tenets that ensure trust, purpose, and integrity in our shared mission for justice.</p>
+            </div>
+            <div class="principles-grid">
+                <div class="principle-card fade-in-up" style="transition-delay: 0.1s;">
+                    <div class="principle-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="principle-text">
+                        <h3>Anonymity & Security</h3>
+                        <p>We use robust security measures to ensure all submissions are confidential and your identity is protected.</p>
+                    </div>
+                </div>
+                <div class="principle-card fade-in-up" style="transition-delay: 0.2s;">
+                    <div class="principle-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                     <div class="principle-text">
+                        <h3>Data with a Purpose</h3>
+                        <p>Aggregated, anonymized data helps identify patterns, providing the evidence needed to advocate for change.</p>
+                    </div>
+                </div>
+                <div class="principle-card fade-in-up" style="transition-delay: 0.3s;">
+                    <div class="principle-icon"><i class="fa-solid fa-moon"></i></div>
+                     <div class="principle-text">
+                        <h3>Faith-Inspired Action</h3>
+                        <p>Rooted in the Islamic call for justice (Adl), we are inspired by faith to stand for truth and support the vulnerable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in-up').forEach(element => {
+            observer.observe(element);
+        });
+    });
+</script>
+{% endblock %}
